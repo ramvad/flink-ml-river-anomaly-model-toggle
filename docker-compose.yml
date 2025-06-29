@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  river-api:
+    build: ./river-server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./river-server:/app
+    working_dir: /app
+    command: ["python", "main.py"]
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  flink-job:
+    build: ./flink-job
+    depends_on:
+      river-api:
+        condition: service_healthy
+    volumes:
+      - ./data:/data
+    environment:
+      - JAVA_OPTS=-Xmx1g
+    command: [
+      "java", "-jar", "app.jar",
+      "--river-api-url", "http://river-api:8000",
+      "--data-path", "/data/transactions.csv",
+      "--delay-ms", "2000"
+    ]

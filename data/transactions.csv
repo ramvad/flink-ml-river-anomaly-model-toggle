@@ -1,0 +1,6 @@
+account_id,timestamp,amount,merchant,location,is_fraud
+A1001,2025-06-29T10:00:00,300.0,Amazon,NY,0
+A1001,2025-06-29T10:15:00,1200.0,Apple,NY,1
+A1002,2025-06-29T11:00:00,50.0,Walmart,CA,0
+A1003,2025-06-29T12:30:00,5000.0,Newegg,TX,1
+A1001,2025-06-29T13:00:00,75.0,Target,NY,0
